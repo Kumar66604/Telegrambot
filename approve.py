@@ -14,10 +14,10 @@ async def toggle_approval(client, message):
 async def handle_join_request(client, chat_join_request):
     if approve_mode:
         try:
-            await client.approve_chat_join_request(chat_join_request.chat.id, chat_join_request.from>
-            await client.send_message(chat_join_request.chat.id, "Join request approved automaticall>
+            await client.approve_chat_join_request(chat_join_request.chat.id, chat_join_request.from_user.id)
+            await client.send_message(chat_join_request.chat.id, "Join request approved automatically.")
         except Exception as e:
-            await client.send_message(chat_join_request.chat.id, f"Failed to approve join request: {>
+            await client.send_message(chat_join_request.chat.id, f"Failed to approve join request: {e}")
     else:
         await client.send_message(chat_join_request.chat.id, "Join request pending manual approval.")
 
