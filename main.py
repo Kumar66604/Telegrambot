@@ -1,6 +1,13 @@
 from pyrogram import Client, filters
 from Config import *
 
+for file in os.listdir():
+    if file.endswith(".session"):
+        os.remove(file)
+for file in os.listdir():
+    if file.endswith(".session-journal"):
+        os.remove(file)
+        
 app = Client(
     "Test-Bot",
     api_id=API_ID,
