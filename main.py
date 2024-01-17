@@ -1,4 +1,5 @@
 from pyrogram import Client, filters
+from Config import *
 
 app = Client(
     "Test-Bot",
