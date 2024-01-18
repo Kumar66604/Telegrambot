@@ -1,5 +1,6 @@
 import os
 import phonenumbers
+import requests
 from pyrogram import Client, filters
 from Config import *
 from phonenumbers import geocoder, carrier, parse
@@ -47,6 +48,25 @@ async def handle_join_request(client, chat_join_request):
     else:
         await client.send_message(chat_join_request.chat.id, "Join request pending manual approval.")
 
+@app.on_message(filters.command("waifu"))
+async def send_waifus(client, message):
+    try:
+        url = 'https://api.waifu.im/search'
+        params = {'included_tags': ['maid'], 'height': '>=2000'}
+        response = requests.get(url, params=params)
+
+        if response.status_code == 200:
+            data = response.json()
+            image_urls = [image['url'] for image in data['images'][:10]]  # Extract URLs of first 10 images
+
+            for image_url in image_urls:
+                await client.send_photo(message.chat.id, image_url)
+
+            await message.reply("Enjoy your 10 waifus!")
+        else:
+            await message.reply("Failed to fetch images from Waifu.im.")
+    except Exception as e:
+        await message.reply(f"An error occurred: {e}")
 
 
 def get_phone_info(phone_number):
