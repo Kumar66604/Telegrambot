@@ -62,7 +62,6 @@ async def send_waifus(client, message):
             for image_url in image_urls:
                 await client.send_photo(message.chat.id, image_url)
 
-            await message.reply("Enjoy your 10 waifus!")
         else:
             await message.reply("Failed to fetch images from Waifu.im.")
     except Exception as e:
