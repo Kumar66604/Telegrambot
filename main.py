@@ -45,7 +45,7 @@ async def handle_join_request(client, chat_join_request):
         await client.send_message(chat_join_request.chat.id, "Join request pending manual approval.")
 
 @app.on_message(filters.command("waifu"))
-async def send_waifus(client, message):
+async def send_waifu(client, message):
     try:
         url = 'https://api.waifu.im/search'
         params = {'included_tags': ['maid'], 'height': '>=2000'}
@@ -53,14 +53,10 @@ async def send_waifus(client, message):
 
         if response.status_code == 200:
             data = response.json()
-            image_urls = [image['url'] for image in data['images'][:10]]  # Extract URLs of first 10 images
-
-            for image_url in image_urls:
-                await client.send_photo(message.chat.id, image_url)
-
-            await message.reply("Enjoy your 10 waifus!")
+            random_image_url = data['images'][0]['url']  # Select a random image
+            await client.send_photo(message.chat.id, random_image_url)
         else:
-            await message.reply("Failed to fetch images from Waifu.im.")
+            await message.reply("Failed to fetch image from Waifu.im.")
     except Exception as e:
         await message.reply(f"An error occurred: {e}")
 
