@@ -54,7 +54,7 @@ async def send_waifu(client, message):
 
         if response.status_code == 200:
             data = response.json()
-            random_image_url = data['images'][10]['url']  # Select a random image
+            random_image_url = data['images'][0]['url']  # Select a random image
             await client.send_photo(message.chat.id, random_image_url)
         else:
             await message.reply("Failed to fetch image from Waifu.im.")
