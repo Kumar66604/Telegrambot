@@ -1,5 +1,4 @@
 import os
-import requests
 import phonenumbers
 from pyrogram import Client, filters
 from Config import *
