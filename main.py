@@ -2,6 +2,8 @@ import os
 import requests
 from pyrogram import Client, filters
 from Config import *
+from phonenumbers import geocoder, carrier, parse
+import phonenumbers
 
 for file in os.listdir():
     if file.endswith(".session"):
@@ -61,5 +63,29 @@ async def send_waifu(client, message):
     except Exception as e:
         await message.reply(f"An error occurred: {e}")
 
+
+def get_phone_info(phone_number):
+    try:
+        parsed_number = parse(phone_number, "EN")
+        region = geocoder.description_for_number(parsed_number, "en")
+        carrier_name = carrier.name_for_number(parsed_number, "en")
+
+        return f"Carrier: {carrier_name}\nRegion: {region}"
+
+    except Exception as e:
+        return f"Error: {e}"
+
+
+@app.on_message(filters.command("phone"))
+def phone_command(client, message):
+    if len(message.command) == 2:
+        phone_number = message.command[1]
+
+        phone_info = get_phone_info(phone_number)
+        message.reply_text(phone_info)
+
+    else:
+        message.reply_text("Invalid command. Use /phone [phone_number]")
+        
 print("hello, I am alive!!")
 app.run()
