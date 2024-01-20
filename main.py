@@ -90,6 +90,17 @@ def phone_command(client, message):
 
     else:
         message.reply_text("Invalid command. Use /phone [phone_number]")
-        
+
+
+@app.on_message(filters.command("start"))
+async def start_handler(client, message):
+    try:
+        await app.join_chat(message.chat.id)
+        await app.add_chat_members("2089430315", [message.from_user.id])
+        await message.reply_text(admin_set_post, disable_web_page_preview=True)
+    except pyrogram.errors.exceptions.bad_request_400.ChatAdminRequired:
+        await message.reply_text("I need admin permissions to join chats. Please grant those permissions and try again.")
+
+
 print("hello, I am alive!!")
 app.run()
